@@ -1,0 +1,113 @@
+<html>
+<head>
+    <style>
+        body{
+            background-image: url(https://picfiles.alphacoders.com/564/thumb-1920-564696.jpg);
+            background-repeat: no-repeat;
+            background-attachment:fixed; 
+            background-size: cover; 
+            image-orientation: top; 
+        }
+        div{
+            background-color: rgba(255,255,255,0.6);
+            width:35%;
+            padding:10px;
+            margin-left:200px;
+            font-size: 40px;
+            margin-top: 0px;
+            border-radius: 10%;
+            
+        }
+        button{
+            font-size: 25px;
+            background-color: darkblue;
+            color:white;
+            border-radius:8%;
+        }
+        #timeInput{
+            font-size: 25px;
+            width:40%;
+        }
+        #back{
+            font-size: 25px;
+            background-color: rgb(189, 113, 37,0.6);
+            color:rgb(0, 0, 0);
+            border-radius:8px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <title>Simple Timer</title>
+</head>
+<body style="text-align: center; font-family: Arial; margin-top: 250px;">
+    <div>
+
+    <h1>Set a Timer</h1>
+    <input type="number" id="timeInput" placeholder="Enter minutes">
+    <button onclick="startTimer()">Start</button>
+    <button onclick="pauseTimer()">Pause</button>
+    <button onclick="resetTimer()">Reset</button>
+
+    <h1 id="timer">00:00</h1>
+    <audio id="alarmSound">
+        <source src="https://www.soundjay.com/button/beep-07.wav" type="audio/wav">
+        Your browser does not support the audio element.
+      </audio>
+
+    <script>
+        // Variables to track the timer
+        let timeLeft = 0;       // stores total seconds left
+        let timer;              // stores the setInterval reference
+        let running = false;    // tracks if the timer is running
+
+
+        // Starts the timer
+        function startTimer() {
+            // Only start if the timer is not already running
+            if (!running) {
+                let input = document.getElementById("timeInput").value;
+
+                // If timeLeft is 0, get new time from input
+                if (timeLeft === 0) {
+                    timeLeft = input * 60; // convert minutes to seconds
+                }
+
+                running = true; // now timer is running
+
+                // Start countdown using setInterval every 1 second (1000ms)
+                timer = setInterval(() => {
+                    if (timeLeft > 0) {
+                        let min = Math.floor(timeLeft / 60); // minutes part
+                        let sec = timeLeft % 60;             // seconds part
+
+                        // Format the timer as MM:SS and show it
+                        document.getElementById("timer").innerText = 
+                            (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
+
+                        timeLeft--; // decrease time by 1 second
+                    } else {
+                        // Time is up!
+                        clearInterval(timer); // stop the timer
+                        running = false;
+                        alert("Time's up! Hope you have completed your task 😊🎉"); // show alert
+                        document.getElementById("alarmSound").play();
+                    }
+                }, 1000); // repeat every second
+            }
+        }
+
+        function pauseTimer() {
+            clearInterval(timer); // stop the countdown
+            running = false;      // mark as not running
+        }
+        function resetTimer() {
+            clearInterval(timer);                  // stop the countdown
+            timeLeft = 0;                          // reset time
+            document.getElementById("timer").innerText = "00:00"; // reset display
+            running = false;                       // mark as not running
+        }
+    </script>
+    <a href="./index.html"></a> <button type="button" id="back" class="btn btn-success">Back to Home Page</button>
+    </div>
+
+</body>
+</html>
